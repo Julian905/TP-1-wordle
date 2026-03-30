@@ -1,5 +1,8 @@
 package JuegoWordle;
 
+import JuegoWordle.EstadoJuego;
+import JuegoWordle.Juego;
+
 public class ControladorJuego {
 	
 	 private Juego juego;

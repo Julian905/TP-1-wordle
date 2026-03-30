@@ -1,6 +1,9 @@
 package JuegoWordle;
 
 import javax.swing.*;
+
+import JuegoWordle.PanelBotones;
+
 import java.awt.*;
 
 public class VentanaJuego
