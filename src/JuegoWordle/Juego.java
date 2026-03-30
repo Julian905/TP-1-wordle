@@ -18,7 +18,7 @@ public class Juego {
 	        "PLATO",
 	        "LLAVE",
 	        "CAMPO",
-	        "PLAYA"
+	        "AVIÓN"
 
 	    };
 
