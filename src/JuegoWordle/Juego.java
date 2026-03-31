@@ -5,7 +5,7 @@ import java.util.Random;
 public class Juego {
 	
 	private String palabraSecreta;
-	    private int intentosRestantes;
+	private int intentosRestantes;
 
 	    private String[] palabras = {
 
@@ -31,7 +31,7 @@ public class Juego {
 	                        palabras.length
 	                )];
 
-	        intentosRestantes = 6;
+	        intentosRestantes = ConfiguracionJuego.getIntentos();
 
 	    }
 

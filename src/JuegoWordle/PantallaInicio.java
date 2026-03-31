@@ -25,9 +25,9 @@ public class PantallaInicio extends JFrame {
         add(dificil);
 
         
-        facil.addActionListener(e -> iniciarJuego());
-        normal.addActionListener(e -> iniciarJuego());
-        dificil.addActionListener(e -> iniciarJuego());
+        facil.addActionListener(e -> {ConfiguracionJuego.Setdificultad("facil"); iniciarJuego();});
+        normal.addActionListener(e -> {ConfiguracionJuego.Setdificultad("medio"); iniciarJuego();});
+        dificil.addActionListener(e -> {ConfiguracionJuego.Setdificultad("dificil"); iniciarJuego();});
 
         setVisible(true);
     }

@@ -27,8 +27,11 @@ public class ControladorJuego {
 	        return juego.getIntentosRestantes();
 
 	    }
+	    
 
 	}
+
+
 
 
 
