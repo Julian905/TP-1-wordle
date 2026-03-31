@@ -1,109 +1,89 @@
 package JuegoWordle;
 
 import javax.swing.*;
-
-import JuegoWordle.PanelBotones;
-
 import java.awt.*;
 
-public class VentanaJuego
-    extends JFrame {
+public class VentanaJuego extends JFrame {
 
-private PanelBotones panel;
+    private PanelBotones panel;
+    private JLabel mensaje;
+    private JLabel tiempoLabel;
+    private ControladorJuego controlador;
 
-private JLabel mensaje;
+    private long tiempoInicio;
+    private Timer timer;
 
-private ControladorJuego controlador;
+    public VentanaJuego() {
 
-public VentanaJuego() {
+        controlador = new ControladorJuego();
 
-    controlador =
-            new ControladorJuego();
+        setTitle("Wordle");
+        setSize(800, 400);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setLayout(new BorderLayout());
 
-    setTitle("Wordle");
+        panel = new PanelBotones();
 
-    setSize(400, 200);
+        mensaje = new JLabel("Adivina la palabra");
+        mensaje.setHorizontalAlignment(SwingConstants.CENTER);
 
-    setDefaultCloseOperation(
-            EXIT_ON_CLOSE
-    );
+        tiempoLabel = new JLabel("Tiempo: 0 s");
+        tiempoLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
-    setLayout(
-            new BorderLayout()
-    );
+        add(mensaje, BorderLayout.NORTH);
+        add(panel, BorderLayout.CENTER);
+        add(tiempoLabel, BorderLayout.SOUTH);
 
-    panel =
-            new PanelBotones();
+        //  INICIAR TIMER
+        tiempoInicio = System.currentTimeMillis();
 
-    mensaje =
-            new JLabel(
-                    "Adivina la palabra"
-            );
+        timer = new Timer(1000, e -> {
+            long tiempoActual = System.currentTimeMillis();
+            long segundos = (tiempoActual - tiempoInicio) / 1000;
+            tiempoLabel.setText("Tiempo: " + segundos + " s");
+        });
 
-    mensaje.setHorizontalAlignment(
-            SwingConstants.CENTER
-    );
+        timer.start();
 
-    add(
-            mensaje,
-            BorderLayout.NORTH
-    );
+        
+        panel.getBoton().addActionListener(e -> {
 
-    add(
-            panel,
-            BorderLayout.CENTER
-    );
+            String palabra = panel.getTexto();
 
-    panel.getBoton()
-            .addActionListener(e -> {
+            EstadoJuego estado = controlador.intentar(palabra);
 
-                String palabra =
-                        panel.getTexto();
+            if (estado == EstadoJuego.GANADO) {
 
-                EstadoJuego estado =
-                        controlador
-                                .intentar(
-                                        palabra
-                                );
+                timer.stop();
 
-                if (estado ==
-                        EstadoJuego.GANADO) {
+                long tiempoFinal = (System.currentTimeMillis() - tiempoInicio) / 1000;
 
-                    mensaje.setText(
-                            "Ganaste"
-                    );
+                mensaje.setText("Ganaste en " + tiempoFinal + " segundos");
 
-                }
+            }
 
-                else if (estado ==
-                        EstadoJuego.PERDIDO) {
+            else if (estado == EstadoJuego.PERDIDO) {
 
-                    mensaje.setText(
-                            "Perdiste"
-                    );
+                timer.stop();
 
-                }
+                long tiempoFinal = (System.currentTimeMillis() - tiempoInicio) / 1000;
 
-                else {
+                mensaje.setText("Perdiste en " + tiempoFinal + " segundos");
 
-                    mensaje.setText(
-                            "Intentos restantes: "
-                            +
-                            controlador
-                                    .getIntentosRestantes()
-                    );
+            }
 
-                }
+            else {
 
-                panel.limpiar();
+                mensaje.setText(
+                        "Intentos restantes: " +
+                        controlador.getIntentosRestantes()
+                );
+            }
 
-            });
+            panel.limpiar();
+        });
 
-    setVisible(true);
-
+        setVisible(true);
+    }
 }
-
-}
-
-
 
