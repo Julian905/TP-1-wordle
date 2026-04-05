@@ -1,74 +1,77 @@
 package JuegoWordle;
 
-import java.util.Random; 
+import java.util.Random;
 
 public class Juego {
-	
-	private String palabraSecreta;
-	private int intentosRestantes;
 
-	    private String[] palabras = {
+    private String palabraSecreta;
+    private int intentosRestantes;
+    private String[] palabras; // ahora no está fija
 
-	        "CASAS",
-	        "PERRO",
-	        "GATOS",
-	        "ARBOL",
-	        "GENTE",
-	        "SILLA",
-	        "PLATO",
-	        "LLAVE",
-	        "CAMPO",
-	        "AVIÓN"
+    public Juego() {
 
-	    };
+        
+        if (ConfiguracionJuego.getIdioma().equals("en")) {
 
-	    public Juego() {
+            palabras = new String[]{
+                "HOUSE",
+                "DOGGO",
+                "CATS",
+                "TREE",
+                "PEOPLE",
+                "CHAIR",
+                "PLATE",
+                "KEYS",
+                "FIELD",
+                "PLANE"
+            };
 
-	        Random r = new Random();
+        } else {
 
-	        palabraSecreta =
-	                palabras[r.nextInt(
-	                        palabras.length
-	                )];
+            palabras = new String[]{
+                "CASAS",
+                "PERRO",
+                "GATOS",
+                "ARBOL",
+                "GENTE",
+                "SILLA",
+                "PLATO",
+                "LLAVE",
+                "CAMPO",
+                "AVION"
+            };
+        }
 
-	        intentosRestantes = ConfiguracionJuego.getIntentos();
+        Random r = new Random();
 
-	    }
+        palabraSecreta = palabras[r.nextInt(palabras.length)];
 
-	    public EstadoJuego intentar(
-	            String palabra) {
+        intentosRestantes = ConfiguracionJuego.getIntentos();
+    }
 
-	        if (palabra == null)
-	            return EstadoJuego.CONTINUAR;
+    public EstadoJuego intentar(String palabra) {
 
-	        palabra = palabra.toUpperCase();
+        if (palabra == null)
+            return EstadoJuego.CONTINUAR;
 
-	        intentosRestantes--;
+        palabra = palabra.toUpperCase();
 
-	        if (palabra.equals(
-	                palabraSecreta)) {
+        intentosRestantes--;
 
-	            return EstadoJuego.GANADO;
+        if (palabra.equals(palabraSecreta)) {
+            return EstadoJuego.GANADO;
+        }
 
-	        }
+        if (intentosRestantes <= 0) {
+            return EstadoJuego.PERDIDO;
+        }
 
-	        if (intentosRestantes <= 0) {
+        return EstadoJuego.CONTINUAR;
+    }
 
-	            return EstadoJuego.PERDIDO;
-
-	        }
-
-	        return EstadoJuego.CONTINUAR;
-
-	    }
-
-	    public int getIntentosRestantes() {
-
-	        return intentosRestantes;
-
-	    }
-
-	}
-
+    public int getIntentosRestantes() {
+        return intentosRestantes;
+    }
+}
 
 

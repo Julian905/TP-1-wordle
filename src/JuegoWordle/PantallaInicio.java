@@ -10,30 +10,88 @@ public class PantallaInicio extends JFrame {
         setTitle("Wordle - Inicio");
         setSize(800, 400);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setLayout(new GridLayout(4, 1));
+        setLayout(new GridLayout(3, 1));
 
-        JLabel titulo = new JLabel("Seleccionar dificultad");
+        JLabel titulo = new JLabel("Seleccionar idioma");
         titulo.setHorizontalAlignment(SwingConstants.CENTER);
 
-        JButton facil = new JButton("Fácil");
-        JButton normal = new JButton("Normal");
-        JButton dificil = new JButton("Difícil");
+        JButton español = new JButton("Español");
+        JButton ingles = new JButton("English");
+
+        add(titulo);
+        add(español);
+        add(ingles);
+
+        español.addActionListener(e -> {
+            ConfiguracionJuego.setIdioma("es");
+            mostrarDificultad();
+        });
+
+        ingles.addActionListener(e -> {
+            ConfiguracionJuego.setIdioma("en");
+            mostrarDificultad();
+        });
+
+        setVisible(true);
+    }
+
+    // pantalla de dificultad después del idioma
+    private void mostrarDificultad() {
+
+        getContentPane().removeAll();
+        setLayout(new GridLayout(4, 1));
+
+        JLabel titulo;
+
+        if (ConfiguracionJuego.getIdioma().equals("en")) {
+            titulo = new JLabel("Select difficulty");
+        } else {
+            titulo = new JLabel("Seleccionar dificultad");
+        }
+
+        titulo.setHorizontalAlignment(SwingConstants.CENTER);
+
+        JButton facil;
+        JButton normal;
+        JButton dificil;
+
+        if (ConfiguracionJuego.getIdioma().equals("en")) {
+            facil = new JButton("Easy");
+            normal = new JButton("Normal");
+            dificil = new JButton("Hard");
+        } else {
+            facil = new JButton("Fácil");
+            normal = new JButton("Normal");
+            dificil = new JButton("Difícil");
+        }
+
 
         add(titulo);
         add(facil);
         add(normal);
         add(dificil);
 
-        
-        facil.addActionListener(e -> {ConfiguracionJuego.Setdificultad("facil"); iniciarJuego();});
-        normal.addActionListener(e -> {ConfiguracionJuego.Setdificultad("medio"); iniciarJuego();});
-        dificil.addActionListener(e -> {ConfiguracionJuego.Setdificultad("dificil"); iniciarJuego();});
+        facil.addActionListener(e -> {
+            ConfiguracionJuego.Setdificultad("facil");
+            iniciarJuego();
+        });
 
-        setVisible(true);
+        normal.addActionListener(e -> {
+            ConfiguracionJuego.Setdificultad("medio");
+            iniciarJuego();
+        });
+
+        dificil.addActionListener(e -> {
+            ConfiguracionJuego.Setdificultad("dificil");
+            iniciarJuego();
+        });
+
+        revalidate();
+        repaint();
     }
 
     private void iniciarJuego() {
-        new VentanaJuego(); 
-        dispose(); 
+        new VentanaJuego();
+        dispose();
     }
 }

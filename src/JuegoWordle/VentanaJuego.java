@@ -13,6 +13,8 @@ public class VentanaJuego extends JFrame {
     private long tiempoInicio;
     private Timer timer;
 
+    private JButton botonReintentar; 
+
     public VentanaJuego() {
 
         controlador = new ControladorJuego();
@@ -24,28 +26,53 @@ public class VentanaJuego extends JFrame {
 
         panel = new PanelBotones();
 
-        mensaje = new JLabel("Adivina la palabra");
-        mensaje.setHorizontalAlignment(SwingConstants.CENTER);
+        //  Texto según idioma
+        if (ConfiguracionJuego.getIdioma().equals("en")) {
+            mensaje = new JLabel("Guess the word");
+            tiempoLabel = new JLabel("Time: 0 s");
+        } else {
+            mensaje = new JLabel("Adivina la palabra");
+            tiempoLabel = new JLabel("Tiempo: 0 s");
+        }
 
-        tiempoLabel = new JLabel("Tiempo: 0 s");
+        mensaje.setHorizontalAlignment(SwingConstants.CENTER);
         tiempoLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
         add(mensaje, BorderLayout.NORTH);
         add(panel, BorderLayout.CENTER);
         add(tiempoLabel, BorderLayout.SOUTH);
 
-        //  INICIAR TIMER
+        // BOTÓN REINTENTAR
+        if (ConfiguracionJuego.getIdioma().equals("en")) {
+            botonReintentar = new JButton("Retry");
+        } else {
+            botonReintentar = new JButton("Reintentar");
+        }
+
+        botonReintentar.setVisible(false); // oculto al inicio
+        add(botonReintentar, BorderLayout.EAST);
+
+        botonReintentar.addActionListener(e -> {
+            new VentanaJuego(); // reinicia
+            dispose(); 
+        });
+
+        // TIMER
         tiempoInicio = System.currentTimeMillis();
 
         timer = new Timer(1000, e -> {
             long tiempoActual = System.currentTimeMillis();
             long segundos = (tiempoActual - tiempoInicio) / 1000;
-            tiempoLabel.setText("Tiempo: " + segundos + " s");
+
+            if (ConfiguracionJuego.getIdioma().equals("en")) {
+                tiempoLabel.setText("Time: " + segundos + " s");
+            } else {
+                tiempoLabel.setText("Tiempo: " + segundos + " s");
+            }
         });
 
         timer.start();
 
-        
         panel.getBoton().addActionListener(e -> {
 
             String palabra = panel.getTexto();
@@ -55,29 +82,40 @@ public class VentanaJuego extends JFrame {
             if (estado == EstadoJuego.GANADO) {
 
                 timer.stop();
-
                 long tiempoFinal = (System.currentTimeMillis() - tiempoInicio) / 1000;
 
-                mensaje.setText("Ganaste en " + tiempoFinal + " segundos");
+                if (ConfiguracionJuego.getIdioma().equals("en")) {
+                    mensaje.setText("You win in " + tiempoFinal + " seconds");
+                } else {
+                    mensaje.setText("Ganaste en " + tiempoFinal + " segundos");
+                }
 
+                panel.getBoton().setEnabled(false); // desactiva intentar
+                botonReintentar.setVisible(true); //  muestra botón
             }
 
             else if (estado == EstadoJuego.PERDIDO) {
 
                 timer.stop();
-
                 long tiempoFinal = (System.currentTimeMillis() - tiempoInicio) / 1000;
 
-                mensaje.setText("Perdiste en " + tiempoFinal + " segundos");
+                if (ConfiguracionJuego.getIdioma().equals("en")) {
+                    mensaje.setText("You lose in " + tiempoFinal + " seconds");
+                } else {
+                    mensaje.setText("Perdiste en " + tiempoFinal + " segundos");
+                }
 
+                panel.getBoton().setEnabled(false); 
+                botonReintentar.setVisible(true); 
             }
 
             else {
 
-                mensaje.setText(
-                        "Intentos restantes: " +
-                        controlador.getIntentosRestantes()
-                );
+                if (ConfiguracionJuego.getIdioma().equals("en")) {
+                    mensaje.setText("Attempts left: " + controlador.getIntentosRestantes());
+                } else {
+                    mensaje.setText("Intentos restantes: " + controlador.getIntentosRestantes());
+                }
             }
 
             panel.limpiar();

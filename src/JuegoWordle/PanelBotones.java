@@ -16,8 +16,11 @@ import java.awt.*;
 
 	        campo = new JTextField(10);
 
-	        boton =
-	                new JButton("Intentar");
+	        if (ConfiguracionJuego.getIdioma().equals("en")) {
+	            boton = new JButton("Try");
+	        } else {
+	            boton = new JButton("Intentar");
+	        }
 
 	        add(campo);
 	        add(boton);
