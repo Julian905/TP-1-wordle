@@ -36,7 +36,7 @@ public class ConfiguracionJuego {
         return dificultad;
     }
 
-    // idioma
+    
     public static void setIdioma(String idiomaElegido) {
         idioma = idiomaElegido.toLowerCase();
     }

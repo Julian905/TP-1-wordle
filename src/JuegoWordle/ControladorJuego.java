@@ -1,39 +1,27 @@
 package JuegoWordle;
 
-import JuegoWordle.EstadoJuego;
-import JuegoWordle.Juego;
-
 public class ControladorJuego {
-	
-	 private Juego juego;
 
-	    public ControladorJuego() {
+    private Juego juego;
 
-	        juego = new Juego();
+    public ControladorJuego() {
+        juego = new Juego();
+    }
 
-	    }
+    
+    public EstadoLetra[] evaluar(String palabra) {
+        return juego.evaluarIntento(palabra);
+    }
 
-	    public EstadoJuego intentar(
-	            String palabra) {
+    public EstadoJuego intentar(String palabra) {
+        return juego.intentar(palabra);
+    }
 
-	        return juego.intentar(
-	                palabra
-	        );
+    public int getIntentosRestantes() {
+        return juego.getIntentosRestantes();
+    }
 
-	    }
-
-	    public int getIntentosRestantes() {
-
-	        return juego.getIntentosRestantes();
-
-	    }
-	    
-
-	}
-
-
-
-
-
-
-
+    public String getPalabraSecreta() {
+        return juego.getPalabraSecreta();
+    }
+}
